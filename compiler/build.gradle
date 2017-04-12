@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //引入Processor
+    compile 'com.google.auto.service:auto-service:1.0-rc2'
+    compile project(':annotations')
+}
+
+//解决类中无法使用中文注释(设置utf-8编码)
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+

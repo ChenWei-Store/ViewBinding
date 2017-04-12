@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 
 public class ClassInfo {
+    private String packageName;
     private String clsName;
     private ArrayList<String> implNames;
     private String extendName;
@@ -59,5 +60,13 @@ public class ClassInfo {
 
     public void setImportCls(ArrayList<String> importCls) {
         this.importCls = importCls;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 }

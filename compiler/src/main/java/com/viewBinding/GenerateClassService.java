@@ -1,8 +1,11 @@
-package com.viewBinding.generateClass;
+package com.viewBinding;
 
 /**
  * Created by chenw on 2017/4/12.
  */
 
 public class GenerateClassService {
+
+
+
 }

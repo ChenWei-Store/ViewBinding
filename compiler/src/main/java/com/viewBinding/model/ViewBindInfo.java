@@ -9,6 +9,7 @@ public class ViewBindInfo {
     private int viewId;
     private String viewQualifiedType;
 
+
     public int getViewId() {
         return viewId;
     }

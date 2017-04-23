@@ -3,6 +3,7 @@ package com.android.viewbinding;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;

@@ -3,10 +3,10 @@ package com.viewBinding;
 import com.google.auto.service.AutoService;
 import com.viewBinding.model.BindingInfo;
 import com.viewBinding.model.OnClickInfo;
+import com.viewBinding.model.ViewBindInfo;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -52,6 +52,7 @@ public class ViewBindingProcess extends AbstractProcessor {
         //获取给定的注解类型的Element集合，Element中保存了声明该注解的元素相关信息
         //对方法声明的注解会返回ExecutableElement，对成员变量声明的注解会返回VariableElement
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(OnClick.class);
+        //获取OnClick注解的相关信息
         for(Element element : elements){
             BindingInfo bindingInfo = createBindingInfo(element);
             OnClick onClick = element.getAnnotation(OnClick.class);
@@ -63,15 +64,22 @@ public class ViewBindingProcess extends AbstractProcessor {
         }
 
         Set<? extends Element> elements2 = roundEnv.getElementsAnnotatedWith(BindView.class);
+        //获取bindView注解的相关信息
         for(Element element : elements2){
             BindingInfo bindingInfo = createBindingInfo(element);
             BindView bindView = element.getAnnotation(BindView.class);
             int viewId = bindView.viewId();
             VariableElement variableElement = (VariableElement)element;
-            String viewQualifiedType = variableElement.getSimpleName().toString();
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "viewQualifiedType: " + viewQualifiedType);
+            String fieldName = variableElement.getSimpleName().toString();
+            String viewQualifiedType = variableElement.asType().toString();
+            ViewBindInfo viewBindInfo = new ViewBindInfo();
+            viewBindInfo.setViewId(viewId);
+            viewBindInfo.setViewQualifiedType(viewQualifiedType);
+            viewBindInfo.setFieldName(fieldName);
+            bindingInfo.addViewBindInfo(viewBindInfo);
         }
 
+        //生成代码
         for(String key : bindingInfoMap.keySet()){
             BindingInfo bindingInfo = bindingInfoMap.get(key);
             try {
@@ -114,14 +122,6 @@ public class ViewBindingProcess extends AbstractProcessor {
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
-    }
-
-
-    public void printfInterface(Object element){
-        Class[] classes =  element.getClass().getInterfaces();
-        for(Class cls : classes){
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, cls.toString());
-        }
     }
 
     private BindingInfo createBindingInfo(Element element){

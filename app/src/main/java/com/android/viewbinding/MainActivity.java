@@ -3,17 +3,14 @@ package com.android.viewbinding;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.ArrayMap;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.viewBinding.BindView;
 import com.viewBinding.OnClick;
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(viewId = R.id.tv)
-    TextView tv;
+//    @BindView(viewId = R.id.tv)
+//    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

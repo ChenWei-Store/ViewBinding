@@ -1,7 +1,6 @@
 package com.android.viewbinding;
 
 import android.view.View;
-import android.widget.TextView;
 
 /**
  * Created by Chenwei on 2017/4/22.
@@ -11,7 +10,7 @@ import android.widget.TextView;
 public class MainActivityTemplate {
     public void bind(final MainActivity target){
         View decorView = target.getWindow().getDecorView();
-        target.tv = (TextView) decorView.findViewById(R.id.tv);
+//        target.tv = (TextView) decorView.findViewById(R.id.tv);
 
         //被注解的类中没有
         decorView.findViewById(R.id.tv).setOnClickListener(new View.OnClickListener() {
@@ -22,11 +21,11 @@ public class MainActivityTemplate {
         });
 
         //被注解的类中声明字段
-        target.tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                target.onTextClick();
-            }
-        });
+//        target.tv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                target.onTextClick();
+//            }
+//        });
     }
 }

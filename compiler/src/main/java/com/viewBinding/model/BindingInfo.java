@@ -2,6 +2,8 @@ package com.viewBinding.model;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.lang.model.element.TypeElement;
 
@@ -10,12 +12,10 @@ import javax.lang.model.element.TypeElement;
  */
 
 public class BindingInfo {
-    public static final int ACTIVITY = 0;
-    public static final int FRAGMENT = 1;
-    public static final int ADAPTER = 2;
-
     private String packageName;
-    private String className;
+    //    private String className;
+    private String newClassName;
+    private String classQualifiedName;
     private ArrayList<ViewBindInfo> viewBindInfos;
     private ArrayList<OnClickInfo> onClickInfos;
     private TypeElement typeElement;
@@ -23,10 +23,29 @@ public class BindingInfo {
     public BindingInfo(String className, String packageName, TypeElement typeElement){
         viewBindInfos = new ArrayList<>();
         onClickInfos = new ArrayList<>();
-        this.className = (className + "$$ViewBinding");
+        this.newClassName = (className + "$$ViewBinding");
         this.packageName = packageName;
         this.typeElement = typeElement;
     }
+
+
+
+    public String getClassQualifiedName() {
+        return classQualifiedName;
+    }
+
+    public void setClassQualifiedName(String classQuaName) {
+        this.classQualifiedName = classQuaName;
+    }
+
+    public ArrayList<OnClickInfo> getOnClickInfos() {
+        return onClickInfos;
+    }
+
+    public void setOnClickInfos(ArrayList<OnClickInfo> onClickInfos) {
+        this.onClickInfos = onClickInfos;
+    }
+
     public String getPackageName() {
         return packageName;
     }
@@ -35,13 +54,21 @@ public class BindingInfo {
         this.packageName = packageName;
     }
 
-    public String getClassName() {
-        return className;
+//    public String getClassName() {
+//        return className;
+//    }
+
+    public String getNewClassName() {
+        return newClassName;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setNewClassName(String newClassName) {
+        this.newClassName = newClassName;
     }
+
+//    public void setClassName(String className) {
+//        this.className = className;
+//    }
 
     public ArrayList<ViewBindInfo> getViewBindInfos() {
         return viewBindInfos;
@@ -84,8 +111,9 @@ public class BindingInfo {
     }
 
     public String generateClass(){
-      StringBuilder sb = generateHeader();
-
+        StringBuilder sb = generateHeader();
+        sb = generateContent(sb);
+        sb.append("}");
         return sb.toString();
     }
 
@@ -96,21 +124,62 @@ public class BindingInfo {
                 .append(";")
                 .append("\n")
                 .append("public class ")
-                .append(getClassName());
+                .append(getNewClassName())
+                .append("{\n");
         return sb;
     }
 
     private StringBuilder generateContent(StringBuilder sb){
-        ArrayList<Integer> ids = new ArrayList<>();
+
+        //生成方法名、方法参数
+        sb.append("\tpublic void bind(final ")
+                .append(classQualifiedName)
+                .append(" target){\n");
+
+        //生成decorview
+        sb.append("\t\tandroid.view.View decorView = target.getWindow().getDecorView();\n");
+
+        Map<Integer, String> foundView = new HashMap<>();
         for(int i = 0; i < viewBindInfos.size(); i++){
-            ids.add(viewBindInfos.get(i).getViewId());
+            //生成findViewyId代码
+            ViewBindInfo viewBindInfo = viewBindInfos.get(i);
+            sb.append("\t\ttarget.")
+                    .append(viewBindInfo.getFieldName())
+                    .append(" = ")
+                    .append("(")
+                    .append(viewBindInfo.getViewQualifiedType())
+                    .append(")decorView.findViewById(")
+                    .append(viewBindInfo.getViewId())
+                    .append(");\n");
+            //保存id和field
+            foundView.put(viewBindInfo.getViewId(), viewBindInfo.getFieldName());
         }
 
         for(int i = 0; i < onClickInfos.size(); i++){
-            ids.add(onClickInfos.get(i).getViewId());
+            OnClickInfo onClickInfo = onClickInfos.get(i);
+            String field = foundView.get(onClickInfo.getViewId());
+            //事件监听前判断是否有findView操作并生成onClickListener
+            if(field == null || field.equals("")){
+                sb.append("\t\tdecorView.findViewById(")
+                        .append(onClickInfo.getViewId())
+                        .append(").setOnClickListener(new android.view.View.OnClickListener(){\n");
+
+            }else{
+                sb.append("\t\ttarget.")
+                        .append(field)
+                        .append(".setOnClickListener(new android.view.View.OnClickListener(){\n");
+            }
+
+            sb.append("\t\t\tpublic void onClick(android.view.View v) {\n")
+                    .append("\t\t\t\ttarget.")
+                    .append(onClickInfo.getMethodName())
+                    .append("();\n")
+                    .append( "\t\t\t}\n")
+                    .append("\t\t});\n");
         }
-
-
+        sb.append("\t}\n");
         return sb;
     }
+
+
 }

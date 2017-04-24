@@ -8,7 +8,15 @@ package com.viewBinding.model;
 public class ViewBindInfo {
     private int viewId;
     private String viewQualifiedType;
+    private String fieldName;
 
+    public String getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
     public int getViewId() {
         return viewId;

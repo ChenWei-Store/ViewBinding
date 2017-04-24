@@ -76,7 +76,7 @@ public class ViewBindingProcess extends AbstractProcessor {
             BindingInfo bindingInfo = bindingInfoMap.get(key);
             try {
                 JavaFileObject jfo = processingEnv.getFiler().createSourceFile(
-                        bindingInfo.getClassName(),
+                        bindingInfo.getNewClassName(),
                         bindingInfo.getTypeElement());
                 Writer writer = jfo.openWriter();
                 writer.write(bindingInfo.generateClass());
@@ -84,7 +84,7 @@ public class ViewBindingProcess extends AbstractProcessor {
                 writer.close();
             } catch (IOException e) {
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
-                        "unable to create " + bindingInfo.getClassName() + "class");
+                        "unable to create " + bindingInfo.getNewClassName() + "class");
                 processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "because " +
                        e.getMessage());
             }
@@ -133,6 +133,7 @@ public class ViewBindingProcess extends AbstractProcessor {
             //获取包名
             String packageName =  processingEnv.getElementUtils().getPackageOf(typeElement).toString();
             bindingInfo = new BindingInfo(clsName, packageName, typeElement) ;
+            bindingInfo.setClassQualifiedName(typeElement.getQualifiedName().toString());
             bindingInfoMap.put(clsName, bindingInfo);
         }
         return bindingInfo;

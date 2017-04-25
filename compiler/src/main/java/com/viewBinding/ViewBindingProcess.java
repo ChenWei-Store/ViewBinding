@@ -77,6 +77,7 @@ public class ViewBindingProcess extends AbstractProcessor {
             viewBindInfo.setViewQualifiedType(viewQualifiedType);
             viewBindInfo.setFieldName(fieldName);
             bindingInfo.addViewBindInfo(viewBindInfo);
+
         }
 
         //生成代码
@@ -126,6 +127,7 @@ public class ViewBindingProcess extends AbstractProcessor {
 
     private BindingInfo createBindingInfo(Element element){
         TypeElement typeElement = (TypeElement)element.getEnclosingElement();
+
         //获取类名
         String clsName = typeElement.getSimpleName().toString();
         BindingInfo bindingInfo = bindingInfoMap.get(clsName);

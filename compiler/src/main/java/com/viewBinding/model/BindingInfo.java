@@ -132,12 +132,20 @@ public class BindingInfo {
     private StringBuilder generateContent(StringBuilder sb){
 
         //生成方法名、方法参数
-        sb.append("\tpublic void bind(final ")
+        sb.append("\tpublic void bind(java.lang.Object targetView, ")
+                .append("final ")
                 .append(classQualifiedName)
                 .append(" target){\n");
 
         //生成decorview
-        sb.append("\t\tandroid.view.View decorView = target.getWindow().getDecorView();\n");
+        sb.append("\t\tandroid.view.View decorView = null;\n")
+                .append("\t\tif(targetView instanceof android.app.Activity){\n")
+                .append("\t\t\tdecorView = ((android.app.Activity)targetView).getWindow().getDecorView();\n")
+                .append("\t\t}else if(targetView instanceof android.support.v4.app.Fragment ){\n")
+                .append("\t\t\tdecorView = ((android.support.v4.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
+                .append("\t\t}else if(targetView instanceof android.app.Fragment ){\n")
+                .append("\t\t\tdecorView = ((android.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
+                .append("\t\t}\n");
 
         Map<Integer, String> foundView = new HashMap<>();
         for(int i = 0; i < viewBindInfos.size(); i++){

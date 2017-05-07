@@ -14,10 +14,8 @@ import com.viewBinding.OnClick;
 
 
 public class BindingFragment extends Fragment {
-
     @BindView(viewId = R.id.tv1)
     TextView tv;
-
     @BindView(viewId = R.id.ib)
     ImageButton imageBtn;
 
@@ -25,23 +23,18 @@ public class BindingFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     public static BindingFragment newInstance() {
         BindingFragment fragment = new BindingFragment();
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_binding, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_binding, container, false);
+        ViewBinding.bind(this, rootView);
+        return rootView;
     }
 
     @OnClick(viewId = R.id.btn)

@@ -1,27 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.android.viewbinding.BindingFragment">
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="text" />
+        style="@style/BindingCommonStyle"
+        android:background="@android:color/holo_blue_light"
+        android:text="Textview" />
 
     <ImageButton
         android:id="@+id/ib"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/hello_blank_fragment" />
+        style="@style/BindingCommonStyle"
+        android:background="@android:color/holo_orange_light" />
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:text="btn" />
+        style="@style/BindingCommonStyle"
+        android:background="@android:color/holo_green_dark"
+        android:text="Button" />
 
-</FrameLayout>
+</LinearLayout>

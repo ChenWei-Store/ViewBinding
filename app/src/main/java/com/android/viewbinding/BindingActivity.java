@@ -15,13 +15,11 @@ public class BindingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_binding);
-//        setSupportActionBar(toolbar);
+        ViewBinding.bind(this);
+
+        setSupportActionBar(toolbar);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fl_container, BindingFragment.newInstance(), null)
                 .commit();
-
     }
-
-
-
 }

@@ -125,6 +125,8 @@ public class BindingInfo {
                 .append("\n")
                 .append("public class ")
                 .append(getNewClassName())
+                .append(" implements ")
+                .append("com.android.viewbinding.BindingObject")
                 .append("{\n");
         return sb;
     }
@@ -132,20 +134,26 @@ public class BindingInfo {
     private StringBuilder generateContent(StringBuilder sb){
 
         //生成方法名、方法参数
-        sb.append("\tpublic void bind(java.lang.Object targetView, ")
-                .append("final ")
-                .append(classQualifiedName)
-                .append(" target){\n");
+        sb.append("\tpublic void bindTo(android.view.View targetView, ")
+                .append("Object ")
+                .append(" targetObj){\n");
 
         //生成decorview
-        sb.append("\t\tandroid.view.View decorView = null;\n")
-                .append("\t\tif(targetView instanceof android.app.Activity){\n")
-                .append("\t\t\tdecorView = ((android.app.Activity)targetView).getWindow().getDecorView();\n")
-                .append("\t\t}else if(targetView instanceof android.support.v4.app.Fragment ){\n")
-                .append("\t\t\tdecorView = ((android.support.v4.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
-                .append("\t\t}else if(targetView instanceof android.app.Fragment ){\n")
-                .append("\t\t\tdecorView = ((android.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
-                .append("\t\t}\n");
+//        sb.append("\t\tandroid.view.View decorView = null;\n")
+//                .append("\t\tif(targetView instanceof android.app.Activity){\n")
+//                .append("\t\t\tdecorView = ((android.app.Activity)targetView).getWindow().getDecorView();\n")
+//                .append("\t\t}else if(targetView instanceof android.support.v4.app.Fragment ){\n")
+//                .append("\t\t\tdecorView = ((android.support.v4.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
+//                .append("\t\t}else if(targetView instanceof android.app.Fragment ){\n")
+//                .append("\t\t\tdecorView = ((android.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
+//                .append("\t\t}\n");
+        sb.append("\t\t")
+                .append("final ")
+                .append(classQualifiedName)
+                .append(" target = ")
+                .append("(")
+                .append(classQualifiedName)
+                .append(")targetObj;\n");
 
         Map<Integer, String> foundView = new HashMap<>();
         for(int i = 0; i < viewBindInfos.size(); i++){
@@ -156,7 +164,7 @@ public class BindingInfo {
                     .append(" = ")
                     .append("(")
                     .append(viewBindInfo.getViewQualifiedType())
-                    .append(")decorView.findViewById(")
+                    .append(")targetView.findViewById(")
                     .append(viewBindInfo.getViewId())
                     .append(");\n");
             //保存id和field
@@ -168,7 +176,7 @@ public class BindingInfo {
             String field = foundView.get(onClickInfo.getViewId());
             //事件监听前判断是否有findView操作并生成onClickListener
             if(field == null || field.equals("")){
-                sb.append("\t\tdecorView.findViewById(")
+                sb.append("\t\ttargetView.findViewById(")
                         .append(onClickInfo.getViewId())
                         .append(").setOnClickListener(new android.view.View.OnClickListener(){\n");
 

@@ -18,6 +18,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic;
@@ -61,6 +62,10 @@ public class ViewBindingProcess extends AbstractProcessor {
             String name = executableElement.getSimpleName().toString();
             OnClickInfo onClickInfo = new OnClickInfo(viewId, name);
             bindingInfo.addOnClickInfo(onClickInfo);
+            if(!checkModifier(element.getModifiers())){
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
+                        name + " method can not use private modifier");
+            }
         }
 
         Set<? extends Element> elements2 = roundEnv.getElementsAnnotatedWith(BindView.class);
@@ -77,6 +82,10 @@ public class ViewBindingProcess extends AbstractProcessor {
             viewBindInfo.setViewQualifiedType(viewQualifiedType);
             viewBindInfo.setFieldName(fieldName);
             bindingInfo.addViewBindInfo(viewBindInfo);
+            if(!checkModifier(element.getModifiers())){
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
+                        fieldName + " variable can not use private modifier");
+            }
 
         }
 
@@ -141,4 +150,21 @@ public class ViewBindingProcess extends AbstractProcessor {
         return bindingInfo;
 
     }
+
+    /**
+     * 检查被@BindView和@OnClick注解声明的成员变量或者方法的修饰符是不是private
+     * @param modifiers
+     * @return
+     */
+    private boolean checkModifier(Set<Modifier> modifiers){
+        for(Modifier modifier : modifiers){
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "modifier " +
+                    modifier.toString());
+            if(modifier.equals(Modifier.PRIVATE)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

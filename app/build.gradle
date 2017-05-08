@@ -26,6 +26,5 @@ dependencies {
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile project(':bind-compiler-code')
     apt project(':compiler')
-    compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
 }

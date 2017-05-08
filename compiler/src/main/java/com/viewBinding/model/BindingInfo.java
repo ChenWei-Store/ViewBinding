@@ -13,7 +13,6 @@ import javax.lang.model.element.TypeElement;
 
 public class BindingInfo {
     private String packageName;
-    //    private String className;
     private String newClassName;
     private String classQualifiedName;
     private ArrayList<ViewBindInfo> viewBindInfos;
@@ -27,8 +26,6 @@ public class BindingInfo {
         this.packageName = packageName;
         this.typeElement = typeElement;
     }
-
-
 
     public String getClassQualifiedName() {
         return classQualifiedName;
@@ -54,10 +51,6 @@ public class BindingInfo {
         this.packageName = packageName;
     }
 
-//    public String getClassName() {
-//        return className;
-//    }
-
     public String getNewClassName() {
         return newClassName;
     }
@@ -65,10 +58,6 @@ public class BindingInfo {
     public void setNewClassName(String newClassName) {
         this.newClassName = newClassName;
     }
-
-//    public void setClassName(String className) {
-//        this.className = className;
-//    }
 
     public ArrayList<ViewBindInfo> getViewBindInfos() {
         return viewBindInfos;
@@ -138,15 +127,6 @@ public class BindingInfo {
                 .append("Object ")
                 .append(" targetObj){\n");
 
-        //生成decorview
-//        sb.append("\t\tandroid.view.View decorView = null;\n")
-//                .append("\t\tif(targetView instanceof android.app.Activity){\n")
-//                .append("\t\t\tdecorView = ((android.app.Activity)targetView).getWindow().getDecorView();\n")
-//                .append("\t\t}else if(targetView instanceof android.support.v4.app.Fragment ){\n")
-//                .append("\t\t\tdecorView = ((android.support.v4.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
-//                .append("\t\t}else if(targetView instanceof android.app.Fragment ){\n")
-//                .append("\t\t\tdecorView = ((android.app.Fragment)targetView).getActivity().getWindow().getDecorView();\n")
-//                .append("\t\t}\n");
         sb.append("\t\t")
                 .append("final ")
                 .append(classQualifiedName)

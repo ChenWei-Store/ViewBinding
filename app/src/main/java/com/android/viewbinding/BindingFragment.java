@@ -15,7 +15,7 @@ import com.viewBinding.OnClick;
 
 public class BindingFragment extends Fragment {
     @BindView(viewId = R.id.tv1)
-    TextView tv;
+    static TextView tv;
     @BindView(viewId = R.id.ib)
     ImageButton imageBtn;
 
@@ -34,11 +34,12 @@ public class BindingFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_binding, container, false);
         ViewBinding.bind(this, rootView);
+        tv.setText("Textview");
         return rootView;
     }
 
     @OnClick(viewId = R.id.btn)
-    public void onBtnClick(){
+    void onBtnClick(){
         Toast.makeText(getActivity(), "onBtnClick", Toast.LENGTH_SHORT).show();
     }
 

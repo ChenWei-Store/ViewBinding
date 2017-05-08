@@ -1,7 +1,5 @@
 package com.viewBinding.model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Chenwei on 2017/4/20.

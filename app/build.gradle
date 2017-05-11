@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    //解决build release apk时出现的bug:Error:Expected resource of type id [ResourceType]
+    lintOptions{
+        disable "ResourceType"
+    }
 }
 
 dependencies {

@@ -24,12 +24,8 @@ import javax.lang.model.element.VariableElement;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-/**
- * 1.包名
- * 2.类名
- * 3. 如果是BindView注解获得id值，字段类型
- * 4. 如果是OnClick注解获得方法名(Element.getSimpleName)和id值.()
- */
+//在build/classes/META-INF/service目录下生成javax.annotation.processing.Processor文件，
+// 该配置文件中列出了一些Processor，告诉javac执行哪些Processor
 @AutoService(Processor.class)
 public class ViewBindingProcess extends AbstractProcessor {
     private Map<String, BindingInfo> bindingInfoMap;  // key className value: BindingInfo
